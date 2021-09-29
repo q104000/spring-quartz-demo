@@ -93,4 +93,6 @@ public interface ScheduleJobService {
      */
     public List<ScheduleJobVo> queryExecutingJobList();
 
+    public List<ScheduleJob> getAllJobs();
+
 }

@@ -2,6 +2,7 @@ package com.dexcoder.demo.controller;
 
 import java.util.List;
 
+import com.dexcoder.demo.model.ScheduleJob;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.dexcoder.demo.service.ScheduleJobService;
 import com.dexcoder.demo.vo.ScheduleJobVo;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * Created by liyd on 2015/4/3.
@@ -126,6 +128,14 @@ public class ScheduleJobController {
         modelMap.put("executingJobList", executingJobList);
 
         return "list-schedule-job";
+    }
+
+    @RequestMapping(value = "getAllJobs", method = RequestMethod.GET)
+    @ResponseBody
+    public String getAllJobs() {
+
+        List<ScheduleJob> list = scheduleJobService.getAllJobs();
+        return list.toString();
     }
 
 }

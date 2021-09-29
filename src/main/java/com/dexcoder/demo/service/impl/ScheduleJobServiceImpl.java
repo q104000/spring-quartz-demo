@@ -2,9 +2,11 @@ package com.dexcoder.demo.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.quartz.*;
+import org.quartz.impl.matchers.GroupMatcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -176,5 +178,34 @@ public class ScheduleJobServiceImpl implements ScheduleJobService {
             return null;
         }
 
+    }
+
+    public List<ScheduleJob> getAllJobs() {
+
+        List<ScheduleJob> jobList = new ArrayList<ScheduleJob>();
+        GroupMatcher<JobKey> matcher = GroupMatcher.anyJobGroup();
+        try {
+            Set<JobKey> jobKeys = scheduler.getJobKeys(matcher);
+            for (JobKey jobKey : jobKeys) {
+                List<? extends Trigger> triggers = scheduler.getTriggersOfJob(jobKey);
+                for (Trigger trigger : triggers) {
+                    ScheduleJob job = new ScheduleJob();
+                    job.setJobName(jobKey.getName());
+                    job.setJobGroup(jobKey.getGroup());
+//                    job.setDesc("触发器:" + trigger.getKey());
+                    Trigger.TriggerState triggerState = scheduler.getTriggerState(trigger.getKey());
+                    job.setStatus(triggerState.name());
+                    if (trigger instanceof CronTrigger) {
+                        CronTrigger cronTrigger = (CronTrigger) trigger;
+                        String cronExpression = cronTrigger.getCronExpression();
+                        job.setCronExpression(cronExpression);
+                    }
+                    jobList.add(job);
+                }
+            }
+        } catch (SchedulerException e) {
+            e.printStackTrace();
+        }
+        return jobList;
     }
 }
