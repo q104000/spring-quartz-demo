@@ -57,6 +57,9 @@
 
     <bean id="jdbcDao" class="com.dexcoder.dal.spring.JdbcDaoImpl">
         <property name="jdbcTemplate" ref="jdbcTemplate"/>
+        <property name="sqlFactory" ref="sqlFactory"/>
+    </bean>
+    <bean id="sqlFactory" class="com.dexcoder.dal.SimpleSqlFactory">
     </bean>
 
     <bean id="jobFactory" class="com.dexcoder.demo.quartz.JobFactoryConfiguration" />

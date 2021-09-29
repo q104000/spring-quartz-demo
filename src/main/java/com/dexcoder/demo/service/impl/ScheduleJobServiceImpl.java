@@ -33,7 +33,15 @@ public class ScheduleJobServiceImpl implements ScheduleJobService {
     private JdbcDao   jdbcDao;
 
     public void initScheduleJob() {
-        List<ScheduleJob> scheduleJobList = jdbcDao.queryList(Criteria.select(ScheduleJob.class));
+        List<ScheduleJob> scheduleJobList = null;
+        scheduleJobList = jdbcDao.queryList(Criteria.select(ScheduleJob.class));
+        //奇怪，这里setIsSync会失败
+//        scheduleJobList = jdbcDao.queryListForSql("SELECT * FROM schedule_job", ScheduleJob.class);
+        Object object = null;
+        object = jdbcDao.querySingleResult(Criteria.select(ScheduleJob.class));
+        object = jdbcDao.queryListForSql("SELECT * FROM schedule_job");
+        object = jdbcDao.querySingleResultForSql("SELECT * FROM schedule_job;");
+//        object = jdbcDao.queryObjectForSql("SELECT * FROM schedule_job");
         if (CollectionUtils.isEmpty(scheduleJobList)) {
             return;
         }
