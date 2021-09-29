@@ -3,6 +3,7 @@ package com.dexcoder.demo.model;
 import java.util.Date;
 
 import com.dexcoder.commons.pager.Pageable;
+import com.dexcoder.dal.annotation.Table;
 
 /**
  * 计划任务信息
@@ -11,6 +12,8 @@ import com.dexcoder.commons.pager.Pageable;
  * Date: 14-1-3
  * Time: 上午10:24
  */
+
+//@Table(name = "schedule_job")
 public class ScheduleJob extends Pageable {
 
     private static final long serialVersionUID = 4888005949821878223L;
